@@ -1,0 +1,44 @@
+# BigRig Texas Hold'em
+
+> Free Texas Hold'em poker skill for Amazon Alexa. Play real poker with your voice: raise, call, check, or fold on any Echo or Alexa-enabled device.
+
+## What It Is
+
+BigRig Texas Hold'em is a free Amazon Alexa skill that brings a full Texas Hold'em poker experience to voice. Players use spoken commands to make betting decisions (raise, call, check, fold) across pre-flop, flop, turn, and river rounds against smart AI opponents.
+
+On screen-enabled devices (Echo Show, Fire TV), the skill renders a live felt poker table using the Alexa Presentation Language (APL) showing hole cards, community cards, chip counts, and touch-action buttons.
+
+## Key Features
+
+- Full Texas Hold'em rules: blinds, raises, all-ins, side pots, hand rankings
+- Voice-controlled gameplay, no screen or controller required
+- AI opponents with unique personalities and aggression levels
+- Visual poker table on Echo Show / Fire TV (APL)
+- Touch-to-act buttons (Raise, Call, Check, Fold) on screen devices
+- Win/loss stat tracking per Alexa user
+- Free to enable, no purchases or subscriptions
+
+## How to Play
+
+1. Say "Alexa, enable Big Rig Texas Hold'em" or find it in the Alexa Skill Store
+2. Say "Alexa, open Big Rig Texas Hold'em"
+3. Say "yes" to deal a hand
+4. Say "raise", "call", "check", or "fold" on your turn
+
+## Supported Devices
+
+All Alexa-enabled devices: Echo, Echo Dot, Echo Show (5/8/10/15), Echo Plus, Fire TV.
+
+## Coming Soon
+
+- Leaderboards (global win-rate rankings)
+- AI dealer commentary (dynamic narration via Claude)
+- Multiplayer (real-time between Alexa devices)
+- Mobile companion app (stats, hand history)
+- Tournament mode (sit-and-go with escalating blinds)
+- Hand history and AI coaching
+
+## Links
+
+- Homepage: https://bigrigpoker.com/
+- Alexa Skill Store: https://www.amazon.com/dp/YOUR_SKILL_ID

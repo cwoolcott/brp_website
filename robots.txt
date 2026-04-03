@@ -1,0 +1,44 @@
+User-agent: *
+Allow: /
+
+# ── AI / LLM Crawlers ─────────────────────────────────────────────────────────
+
+# OpenAI (ChatGPT, SearchGPT)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+# Anthropic (Claude)
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# Google Gemini / Vertex AI
+User-agent: Google-Extended
+Allow: /
+
+# Meta AI
+User-agent: meta-externalagent
+Allow: /
+
+# Microsoft Copilot (uses Bingbot, already covered by *)
+User-agent: Bingbot
+Allow: /
+
+# Apple
+User-agent: Applebot-Extended
+Allow: /
+
+# ── Sitemap ───────────────────────────────────────────────────────────────────
+Sitemap: https://bigrigpoker.com/sitemap.xml
