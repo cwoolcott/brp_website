@@ -259,13 +259,16 @@
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <img src="https://bigrigpoker.com/images/bigrig_logo.png"
            alt="BigRig Logo" class="h-8 w-auto object-contain" />
-      <a href="#try"
+      <div class="flex items-center gap-5">
+        <a href="#leaderboard" class="text-white/50 hover:text-gold text-sm font-medium transition-colors">Leaderboard</a>
+        <a href="#try"
          class="btn-alexa inline-flex items-center gap-2 bg-gold text-black font-semibold text-sm px-5 py-2 rounded-full">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
         </svg>
         Try on Alexa
       </a>
+      </div>
     </div>
   </nav>
 
@@ -430,8 +433,56 @@
     </div>
   </section>
 
+  <!-- ── Leaderboard ────────────────────────────────────────────────────────── -->
+  <section class="bg-black/50 py-24 px-6" id="leaderboard">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-14 fade-up">
+        <p class="text-gold text-sm font-semibold tracking-widest uppercase mb-3">Top Players</p>
+        <h2 class="font-display text-4xl md:text-5xl font-bold">Leaderboard</h2>
+        <p class="text-white/40 mt-4 max-w-lg mx-auto">
+          The highest earners at the BigRig table. Minimum 3 games to qualify.
+        </p>
+      </div>
+
+      <div class="feature-card bg-felt2/40 rounded-2xl overflow-hidden fade-up">
+        <!-- Loading state -->
+        <div id="lb-loading" class="py-16 text-center">
+          <div class="inline-block w-6 h-6 border-2 border-gold/30 border-t-gold rounded-full animate-spin mb-3"></div>
+          <p class="text-white/40 text-sm">Loading leaderboard...</p>
+        </div>
+
+        <!-- Error state -->
+        <div id="lb-error" class="py-16 text-center hidden">
+          <p class="text-white/40 text-sm">Unable to load leaderboard right now.</p>
+        </div>
+
+        <!-- Empty state -->
+        <div id="lb-empty" class="py-16 text-center hidden">
+          <p class="text-white/40 text-sm">No players on the board yet. Be the first!</p>
+        </div>
+
+        <!-- Table -->
+        <div id="lb-table-wrap" class="hidden">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-white/10 text-white/50 text-xs uppercase tracking-wider">
+                <th class="text-left px-6 py-4 w-12">#</th>
+                <th class="text-left px-4 py-4">Player</th>
+                <th class="text-center px-4 py-4 hidden sm:table-cell">Games</th>
+                <th class="text-center px-4 py-4 hidden sm:table-cell">Wins</th>
+                <th class="text-center px-4 py-4">Win %</th>
+                <th class="text-right px-6 py-4">Net Chips</th>
+              </tr>
+            </thead>
+            <tbody id="lb-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ── Coming Soon ───────────────────────────────────────────────────────── -->
-  <section class="bg-black/50 py-24 px-6" id="coming-soon">
+  <section class="py-24 px-6" id="coming-soon">
     <div class="max-w-5xl mx-auto">
       <div class="text-center mb-16 fade-up">
         <span class="badge-pulse inline-block bg-gold/10 border border-gold/30 text-gold text-xs font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4">
@@ -446,19 +497,6 @@
       <div class="grid sm:grid-cols-2 gap-5">
 
         <div class="feature-card bg-felt2/30 rounded-2xl p-7 flex gap-5 items-start fade-up">
-          <div class="text-3xl shrink-0">🏆</div>
-          <div>
-            <div class="flex items-center gap-2 mb-1">
-              <h3 class="font-semibold text-base">Leaderboards</h3>
-              <span class="text-[10px] bg-gold/15 text-gold border border-gold/20 px-2 py-0.5 rounded-full font-medium">Soon</span>
-            </div>
-            <p class="text-white/45 text-sm leading-relaxed">
-              See how your win rate stacks up globally. Weekly and all-time rankings across Alexa players.
-            </p>
-          </div>
-        </div>
-
-        <div class="feature-card bg-felt2/30 rounded-2xl p-7 flex gap-5 items-start fade-up" style="transition-delay:0.08s">
           <div class="text-3xl shrink-0">🧠</div>
           <div>
             <div class="flex items-center gap-2 mb-1">
@@ -632,6 +670,7 @@
       </p>
       <div class="flex gap-5 text-white/30 text-sm">
         <a href="#features" class="hover:text-white/70 transition-colors">Features</a>
+        <a href="#leaderboard" class="hover:text-white/70 transition-colors">Leaderboard</a>
         <a href="#coming-soon" class="hover:text-white/70 transition-colors">Coming Soon</a>
         <a href="#faq" class="hover:text-white/70 transition-colors">FAQ</a>
         <a href="https://www.amazon.com/dp/B0DK3WHZ8N" target="_blank" rel="noopener" class="hover:text-gold transition-colors">Try It</a>
@@ -686,6 +725,53 @@
     }, { threshold: 0.12 });
 
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Leaderboard
+    (async function loadLeaderboard() {
+      const loading = document.getElementById('lb-loading');
+      const error   = document.getElementById('lb-error');
+      const empty   = document.getElementById('lb-empty');
+      const wrap    = document.getElementById('lb-table-wrap');
+      const body    = document.getElementById('lb-body');
+
+      try {
+        const res = await fetch('/api/leaderboard.php?limit=25');
+        if (!res.ok) throw new Error(res.status);
+        const data = await res.json();
+        const rows = data.leaderboard || [];
+
+        loading.classList.add('hidden');
+
+        if (rows.length === 0) {
+          empty.classList.remove('hidden');
+          return;
+        }
+
+        rows.forEach((p, i) => {
+          const rank = i + 1;
+          const medal = rank === 1 ? '&#x1f947;' : rank === 2 ? '&#x1f948;' : rank === 3 ? '&#x1f949;' : rank;
+          const chips = Number(p.total_net_chips);
+          const chipsColor = chips >= 0 ? 'text-green-400' : 'text-red-400';
+          const chipsStr = (chips >= 0 ? '+' : '') + chips.toLocaleString();
+
+          const tr = document.createElement('tr');
+          tr.className = 'border-b border-white/5 hover:bg-white/[0.03] transition-colors';
+          tr.innerHTML =
+            '<td class="px-6 py-4 font-bold text-gold/80">' + medal + '</td>' +
+            '<td class="px-4 py-4 font-semibold">' + p.full_name + '</td>' +
+            '<td class="px-4 py-4 text-center text-white/50 hidden sm:table-cell">' + p.games_played + '</td>' +
+            '<td class="px-4 py-4 text-center text-white/50 hidden sm:table-cell">' + p.games_won + '</td>' +
+            '<td class="px-4 py-4 text-center text-white/60">' + p.win_rate + '%</td>' +
+            '<td class="px-6 py-4 text-right font-mono font-semibold ' + chipsColor + '">' + chipsStr + '</td>';
+          body.appendChild(tr);
+        });
+
+        wrap.classList.remove('hidden');
+      } catch (e) {
+        loading.classList.add('hidden');
+        error.classList.remove('hidden');
+      }
+    })();
   </script>
 </body>
 </html>
